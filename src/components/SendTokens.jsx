@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useLocation } from 'react-router-dom';
-
 
 const SendTokens = ({ windowContract }) => {
     const [amount, setAmount] = useState();
@@ -70,7 +68,7 @@ const SendTokens = ({ windowContract }) => {
                     <button
                         onClick={() => {
                             navigator.clipboard.writeText(
-                                useLocation.pathname() + "/receive/" + sendTokensOutput
+                                "isk-token-qr.netlify.app/receive/" + sendTokensOutput
                             );
                             setCopied(true);
                         }}

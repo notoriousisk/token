@@ -5,6 +5,7 @@ const SendTokens = ({ windowContract }) => {
     const [recipientsNumber, setRecipientsNumber] = useState();
     const [password, setPassword] = useState("");
     const [sendTokensOutput, setSendTokensOutput] = useState("");
+    const [copied, setCopied] = useState(false);
 
     const handleAmountChange = (event) => {
         setAmount(event.target.value);
@@ -22,7 +23,10 @@ const SendTokens = ({ windowContract }) => {
                 .sendTokens(amount, recipientsNumber, password)
                 .send({ from: window.web3.eth.defaultAccount });
             console.log("result:", result);
-            setSendTokensOutput(result.toString());
+            const uniqueString = await windowContract.methods
+                .getLastCheque()
+                .call();
+            setSendTokensOutput(uniqueString.toString());
         } catch (error) {
             console.error("Error sending tokens:", error);
         }
@@ -58,9 +62,22 @@ const SendTokens = ({ windowContract }) => {
             >
                 Send Tokens
             </button>
-            <div className='border-l border-gray-300 rounded mt-2 p-2'>
-                Link to receive tokens: {sendTokensOutput}
-            </div>
+            {sendTokensOutput && (
+                <div className='border-l border-gray-300 rounded mt-2 p-2 flex flex-row gap-2 items-center'>
+                    <p>Link to receive tokens: {sendTokensOutput}</p>
+                    <button
+                        onClick={() => {
+                            navigator.clipboard.writeText(
+                                "localhost:3000/receive/" + sendTokensOutput
+                            );
+                            setCopied(true);
+                        }}
+                        className='border-l border-b font-bold rounded'
+                    >
+                        {copied ? "Copied!" : "Copy Link"}
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

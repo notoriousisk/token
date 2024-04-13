@@ -31,7 +31,7 @@ function App() {
         return (
             <div className='mx-auto flex min-h-screen max-w-screen-xl flex-col'>
                 <TokenNavbar />
-                <h1 className="text-bold">Connecting account...</h1>
+                <h1 className="mx-4 text-bold">Connecting account...</h1>
             </div>
         );
     }

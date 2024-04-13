@@ -27,14 +27,16 @@ const ReceiveTokens = ({ windowContract }) => {
                 setReceiveTokensError("Unique string cannot be empty.");
                 return;
             }
-
+            const amountReceived = await windowContract.methods
+                .receiveTokens(uniqueString, recievePassword)
+                .call({ from: window.web3.eth.defaultAccount });
             const result = await windowContract.methods
                 .receiveTokens(uniqueString, recievePassword)
                 .send({ from: window.web3.eth.defaultAccount });
 
             console.log("result:", result);
             setReceiveTokensOutput(
-                `Received ${result.toString()} tokens successfully.`
+                `Received ${amountReceived.toString()} tokens successfully.`
             );
             setReceiveTokensError("");
         } catch (error) {

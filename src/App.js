@@ -36,7 +36,7 @@ function App() {
         );
     }
     return (
-        <Router>
+        <Router basename="/token"> 
             <div className='mx-auto flex min-h-screen max-w-screen-xl flex-col '>
                 <TokenNavbar />
                 <Routes>

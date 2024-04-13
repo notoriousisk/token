@@ -68,7 +68,7 @@ const SendTokens = ({ windowContract }) => {
                     <button
                         onClick={() => {
                             navigator.clipboard.writeText(
-                                "localhost:3000/receive/" + sendTokensOutput
+                                "https://notoriousisk.github.io/token/receive/" + sendTokensOutput
                             );
                             setCopied(true);
                         }}

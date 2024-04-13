@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import TokenNavbar from "./components/TokenNavbar";
 import HomePage from "./pages/HomePage";
 import SendTokensPage from "./pages/SendTokensPage";
@@ -31,12 +31,13 @@ function App() {
         return (
             <div className='mx-auto flex min-h-screen max-w-screen-xl flex-col'>
                 <TokenNavbar />
-                <h1 className="mx-4 text-bold">Connecting account...</h1>
+                <h1 className='mx-4 text-bold'>Connecting account...</h1>
             </div>
         );
     }
+    console.log("xyz");
     return (
-        <Router basename="/token"> 
+        <Router basename='token'>
             <div className='mx-auto flex min-h-screen max-w-screen-xl flex-col '>
                 <TokenNavbar />
                 <Routes>

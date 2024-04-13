@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useLocation } from 'react-router-dom';
+
 
 const SendTokens = ({ windowContract }) => {
     const [amount, setAmount] = useState();
@@ -68,7 +70,7 @@ const SendTokens = ({ windowContract }) => {
                     <button
                         onClick={() => {
                             navigator.clipboard.writeText(
-                                "https://notoriousisk.github.io/token/receive/" + sendTokensOutput
+                                useLocation.pathname() + "/receive/" + sendTokensOutput
                             );
                             setCopied(true);
                         }}

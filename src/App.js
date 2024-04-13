@@ -35,9 +35,9 @@ function App() {
             </div>
         );
     }
-    console.log("xyz");
+    console.log("zyx");
     return (
-        <Router basename='/token'>
+        <Router>
             <div className='mx-auto flex min-h-screen max-w-screen-xl flex-col '>
                 <TokenNavbar />
                 <Routes>

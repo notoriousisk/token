@@ -16,6 +16,7 @@ const ListTransfers = ({ windowContract }) => {
     const handleAllTransfers = async () => {
         try {
             const c = await handleListTransfers();
+            console.log("c:", c);
             const tranferObjects = [];
             for (let i = 0; i < transferList.length; i++) {
                 const transferDetails = await getTransferDetails(

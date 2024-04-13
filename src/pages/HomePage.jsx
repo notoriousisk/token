@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import CheckBalance from "../components/CheckBalance";
 
 const HomePage = ({

@@ -6,4 +6,4 @@ The contract allows for the generation and management of Cheques that users can 
 
 Dapp allows to check the balance, create a Cheque, manage Cheques and receive tokens using Cheque
 
-###
+### 

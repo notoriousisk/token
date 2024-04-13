@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const ListTransfers = ({ windowContract }) => {
     const handleListTransfers = async () => {
@@ -13,7 +13,28 @@ const ListTransfers = ({ windowContract }) => {
         }
     };
 
-    
+    const handleAllTransfers = async () => {
+        try {
+            const c = await handleListTransfers();
+            const tranferObjects = [];
+            for (let i = 0; i < transferList.length; i++) {
+                const transferDetails = await getTransferDetails(
+                    transferList[i]
+                );
+                const transferObject = {
+                    uniqueString: transferList[i],
+                    amount: transferDetails ? transferDetails[0] : "",
+                    recipientsNumber: transferDetails ? transferDetails[1] : "",
+                    numberLeft: transferDetails ? transferDetails[2] : "",
+                };
+                tranferObjects.push(transferObject);
+            }
+            setAllTransfers(tranferObjects);
+            console.log("allTransfers:", tranferObjects);
+        } catch (error) {
+            console.error("Error getting transfer info:", error);
+        }
+    };
 
     const getTransferDetails = async (transfer) => {
         try {
@@ -28,16 +49,50 @@ const ListTransfers = ({ windowContract }) => {
         }
     };
 
+    const handleDeleteTransfer = async (transfer) => {
+        if (window.confirm("Are you sure you want to refund this transfer?")) {
+            try {
+                const result = await windowContract.methods
+                    .cancelTransfer(transfer)
+                    .send({ from: window.web3.eth.defaultAccount });
+                console.log("result:", result);
+                handleAllTransfers();
+            } catch (error) {
+                console.error("Error deleting transfer:", error);
+            }
+        } else {
+            console.log("Transfer deletion cancelled");
+        }
+    };
+
+    const [allTransfers, setAllTransfers] = useState([]);
     const [transferList, setTransferList] = useState([]);
+    const [showEmptyTransfers, setShowEmptyTransfers] = useState(true);
 
     return (
         <div className='border border-gray-300 rounded p-2'>
-            <button
-                className='bg-gray-900 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded'
-                onClick={handleListTransfers}
-            >
-                List Transfers
-            </button>
+            <div className='flex flex-row items-center'>
+                <button
+                    className='bg-gray-900 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded'
+                    onClick={handleAllTransfers}
+                >
+                    List Transfers
+                </button>
+                <button
+                    onClick={() => setShowEmptyTransfers(!showEmptyTransfers)}
+                    className='pl-4'
+                >
+                    <img
+                        src={
+                            showEmptyTransfers
+                                ? "/toggle-on.svg"
+                                : "/toggle-off.svg"
+                        }
+                        alt='toggle'
+                    />
+                </button>
+                <p className='pr-4'>Show empty transfers</p>
+            </div>
             <table className='border border-gray-300 mt-4'>
                 <thead>
                     <tr>
@@ -56,25 +111,50 @@ const ListTransfers = ({ windowContract }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {transferList.map((transfer, index) => {
-                        const transferDetails = getTransferDetails(transfer);
-                        return (
-                            <tr key={index} className='border border-gray-300'>
-                                <td className='border border-gray-300 px-4 py-2 overflow-x-auto max-w-[250px]'>
-                                    {transfer}
-                                </td>
-                                <td className='border border-gray-300 px-4 py-2 overflow-x-auto max-w-[200px]'>
-                                    {transferDetails ? transferDetails[0] : ""}
-                                </td>
-                                <td className='border border-gray-300 px-4 py-2'>
-                                    {transferDetails ? transferDetails[1] : ""}
-                                </td>
-                                <td className='border border-gray-300 px-4 py-2'>
-                                    {transferDetails ? transferDetails[2] : ""}
-                                </td>
-                            </tr>
-                        );
-                    })}
+                    {allTransfers
+                        .filter(
+                            (transfer) =>
+                                showEmptyTransfers || transfer.numberLeft > 0
+                        )
+                        .map((transfer, index) => {
+                            return (
+                                <tr
+                                    key={index}
+                                    className='border border-gray-300'
+                                >
+                                    <td className='border border-gray-300 px-4 py-2 overflow-x-auto max-w-[250px]'>
+                                        {transfer.uniqueString}
+                                    </td>
+                                    <td className='border border-gray-300 px-4 py-2 overflow-x-auto max-w-[200px]'>
+                                        {transfer.amount.toString()}
+                                    </td>
+                                    <td className='border border-gray-300 px-4 py-2'>
+                                        {transfer.recipientsNumber.toString()}
+                                    </td>
+                                    <td className='border border-gray-300 px-4 py-2'>
+                                        {transfer.numberLeft.toString()}
+                                    </td>
+                                    <td className='border border-gray-300 px-4 py-2'>
+                                        {transfer.numberLeft > 0 ? (
+                                            <button
+                                                className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                                                onClick={() =>
+                                                    handleDeleteTransfer(
+                                                        transfer.uniqueString
+                                                    )
+                                                }
+                                            >
+                                                Delete
+                                            </button>
+                                        ) : (
+                                            <button className='bg-zinc-600 text-white font-bold py-2 px-4 rounded disabled'>
+                                                Delete
+                                            </button>
+                                        )}
+                                    </td>
+                                </tr>
+                            );
+                        })}
                 </tbody>
             </table>
         </div>

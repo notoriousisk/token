@@ -1,6 +1,6 @@
 import contractABI from "./GiveABI.json";
 import Web3 from "web3";
-const contractAddress = "0x7f5f29d502973468ac97f967749f9a916c3ca5f6"; // Sepolia
+const contractAddress = "0x39de904D11497029017d00cF8264970fe1Cf4E71"; // Sepolia
 
 async function loadWeb3() {
     if (window.ethereum) {

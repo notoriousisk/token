@@ -148,7 +148,7 @@ const ListTransfers = ({ windowContract }) => {
                                                 Delete
                                             </button>
                                         ) : (
-                                            <button className='bg-zinc-600 text-white font-bold py-2 px-4 rounded disabled'>
+                                            <button className='bg-zinc-600 text-white font-bold py-2 px-4 rounded disabled pointer-events-none'>
                                                 Delete
                                             </button>
                                         )}

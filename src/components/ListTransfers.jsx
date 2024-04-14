@@ -123,7 +123,15 @@ const ListTransfers = ({ windowContract }) => {
                                     key={index}
                                     className='border border-gray-300'
                                 >
-                                    <td className='border border-gray-300 px-4 py-2 overflow-x-auto max-w-[250px]'>
+                                    <td
+                                        className='border border-gray-300 px-4 py-2 overflow-x-auto max-w-[250px] cursor-pointer'
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(
+                                                "isk-token-qr.netlify.app/receive/" +
+                                                    transfer.uniqueString
+                                            );
+                                        }}
+                                    >
                                         {transfer.uniqueString}
                                     </td>
                                     <td className='border border-gray-300 px-4 py-2 overflow-x-auto max-w-[200px]'>

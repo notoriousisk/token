@@ -1,5 +1,6 @@
 import React from "react";
 import CheckBalance from "../components/CheckBalance";
+import TransferTokens from "../components/TransferTokens";
 
 const HomePage = ({
     address,
@@ -16,6 +17,7 @@ const HomePage = ({
                     setAddress={setAddress}
                     windowContract={windowContract}
                 />
+                <TransferTokens windowContract={windowContract} />
             </div>
         </div>
     );
